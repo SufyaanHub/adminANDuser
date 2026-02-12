@@ -1,53 +1,38 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../../../../service/operations/authAPI';
+import { toast } from 'react-hot-toast';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({ email: '', password: '' });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({ email: '', password: '' });
-
-    let isValid = true;
-
-    if (!email) {
-      setErrors((prev) => ({ ...prev, email: 'Email is required' }));
-      isValid = false;
-    } else if (!validateEmail(email)) {
-      setErrors((prev) => ({ ...prev, email: 'Please enter a valid email' }));
-      isValid = false;
+    
+    // Simple validation
+    if (!email.trim() || !password.trim()) {
+      toast.error('Email and password are required');
+      return;
     }
 
-    if (!password) {
-      setErrors((prev) => ({ ...prev, password: 'Password is required' }));
-      isValid = false;
-    }
-
-    if (isValid) {
-      setIsLoading(true);
-      try {
-        // Dispatch Redux login action
-        await dispatch(login(email, password, navigate));
-      } catch (err) {
-        // handle any dispatch errors if necessary
-        console.error('Login failed:', err);
-      }
-      setIsLoading(false);
+    try {
+      console.log("Login form submitted with:", { email, password: "****" });
+      
+      await dispatch(login(email, password, navigate));
+      
+      // Clear form on success
+      setEmail('');
+      setPassword('');
+    } catch (err) {
+      console.error('Login error:', err);
     }
   };
 
@@ -71,16 +56,11 @@ const LoginForm = () => {
               autoComplete="email"
               placeholder="Enter email address"
               required
-              className={`block w-full rounded-lg border ${
-                errors.email ? 'border-red-300' : 'border-gray-300'
-              } bg-white py-2 pl-10 pr-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm`}
+              className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-600">{errors.email}</p>
-          )}
         </div>
 
         <div>
@@ -98,9 +78,7 @@ const LoginForm = () => {
               autoComplete="current-password"
               placeholder="Enter Password"
               required
-              className={`block w-full rounded-lg border ${
-                errors.password ? 'border-red-300' : 'border-gray-300'
-              } bg-white py-2 pl-10 pr-10 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm`}
+              className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-10 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -113,9 +91,6 @@ const LoginForm = () => {
               {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
           </div>
-          {errors.password && (
-            <p className="mt-1 text-xs text-red-600">{errors.password}</p>
-          )}
         </div>
       </div>
 
