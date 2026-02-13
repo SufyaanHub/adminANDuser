@@ -23,7 +23,8 @@ const corsOptions = {
       'http://localhost:3000',
       'http://localhost:5173',
       'http://localhost:5174',
-      'https://skill-house-website.vercel.app'
+      'https://skill-house-website.vercel.app',
+      'https://adminuser-self.vercel.app'
     ];
     
     // Allow requests with no origin (like curl requests)
