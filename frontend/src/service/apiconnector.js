@@ -7,11 +7,17 @@ export const axiosInstance = axios.create({
 });
 
 export const apiConnector = (method, url, bodyData, headers, params) => {
-    return axiosInstance({
+    const config = {
         method: method,
         url: url,
-        data: bodyData ? bodyData : null,
         headers: headers ? headers : { "Content-Type": "application/json" },
         params: params ? params : null,
-    });
+    };
+    
+    // Don't send data for GET and DELETE requests
+    if (method !== 'GET' && method !== 'DELETE') {
+        config.data = bodyData || null;
+    }
+    
+    return axiosInstance(config);
 }

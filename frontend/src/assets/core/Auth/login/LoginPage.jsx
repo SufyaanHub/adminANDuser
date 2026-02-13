@@ -24,7 +24,7 @@ const LoginPage = () => {
           </div>
           
           <div className="mt-6 text-center text-xs text-gray-600">
-            <p>© {new Date().getFullYear()} SkillHOUSE. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} DUCAT. All rights reserved.</p>
           </div>
         </div>
       </div>

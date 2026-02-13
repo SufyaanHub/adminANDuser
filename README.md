@@ -18,14 +18,28 @@ A full-stack authentication system built with React and Express.js, featuring us
 
 ## ✨ Features
 
-- **User Authentication**: Register and login with email/password
-- **Google OAuth Integration**: Sign up/login with Google account
-- **JWT Token Management**: Secure token-based authentication
-- **Password Encryption**: Bcrypt for secure password hashing
-- **Role-Based Access Control**: Admin and User roles
-- **Protected Routes**: Special dashboard pages for authenticated users
-- **Responsive UI**: Built with Tailwind CSS for modern design
-- **State Management**: Redux Toolkit for global state management
+### Core Features ✅
+- **User Authentication**: Email/password registration and login with JWT
+- **JWT Token Management**: Secure token-based authentication with 7-day expiry
+- **Role-Based Access Control**: User and Admin roles with authorization
+- **Protected Routes**: Secure frontend and backend routes
+- **Password Encryption**: Bcryptjs for secure password hashing
+- **State Management**: Redux Toolkit for global auth state
+- **Responsive UI**: Fully responsive Tailwind CSS design
+
+### Community Features ✅
+- **Post Management**: Create, read, update, delete posts (CRUD)
+- **Comment System**: Comment on posts, edit/delete own comments
+- **Like System**: Like/Unlike posts and comments with tracking
+- **Admin Moderation**: Official admin replies clearly distinguished
+- **Content Pagination**: Paginated feeds for optimal performance
+- **User Engagement**: Track likes, comments, and interactions
+
+### Admin Dashboard ✅
+- **Moderation Dashboard**: View all posts for management
+- **Content Management**: Delete or manage user posts/comments
+- **Official Responses**: Post official admin replies to user posts
+- **User Management**: Admin-specific controls and oversight
 
 ---
 
@@ -66,65 +80,86 @@ Before running the project, ensure you have installed:
 
 ```
 newway/
-├── frontend/                    # React frontend application
+├── frontend/                    # React.js Frontend (Vite)
 │   ├── src/
 │   │   ├── assets/              # Images, animations
-│   │   │   └── core/
-│   │   │       └── Auth/        # Authentication components
-│   │   ├── components/          # Reusable components
+│   │   │   └── core/Auth/       # Auth components
+│   │   ├── components/
+│   │   │   └── ProtectedRoute.jsx
 │   │   ├── pages/               # Page components
+│   │   │   ├── home.jsx
 │   │   │   ├── login.jsx
 │   │   │   ├── signup.jsx
-│   │   │   ├── admin-dashboard.jsx
-│   │   │   ├── user-dashboard.jsx
+│   │   │   ├── user-dashboard.jsx        # User feed & posts
+│   │   │   ├── admin-dashboard.jsx       # Admin moderation
 │   │   │   └── unauthorized.jsx
-│   │   ├── service/             # API calls
+│   │   ├── service/
+│   │   │   ├── apiconnector.js
+│   │   │   ├── apis.js
 │   │   │   └── operations/
-│   │   ├── slices/              # Redux slices
-│   │   ├── reducer/             # Redux reducer
-│   │   ├── store.js             # Redux store configuration
-│   │   └── App.jsx
+│   │   │       ├── authAPI.js
+│   │   │       ├── postAPI.js            # Post operations ✨ NEW
+│   │   │       ├── commentAPI.js         # Comment operations ✨ NEW
+│   │   │       └── adminAPI.js           # Admin operations ✨ NEW
+│   │   ├── slices/
+│   │   │   └── authSlice.js
+│   │   ├── store.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   ├── package.json
 │   ├── vite.config.js
+│   ├── .env.example
 │   └── README.md
 │
-├── server/                      # Express.js backend
+├── server/                      # Node.js/Express.js Backend
 │   ├── config/
-│   │   └── database.js          # MongoDB connection
-│   ├── controller/              # Business logic
+│   │   └── database.js
+│   ├── controller/
 │   │   ├── authController.js
-│   │   └── login.js
+│   │   ├── postController.js            # Post CRUD ✨ NEW
+│   │   ├── commentController.js         # Comment CRUD ✨ NEW
+│   │   └── adminController.js           # Admin moderation ✨ NEW
 │   ├── middleware/
-│   │   └── authMiddleware.js    # JWT verification
+│   │   └── authMiddleware.js
 │   ├── model/
-│   │   └── user.js              # User schema
-│   ├── routes/
-│   │   └── authRoutes.js        # Auth endpoints
-│   ├── index.js                 # Server entry point
-│   ├── package.json
-│   └── config/
-│       └── .env                 # Environment variables
-│
-└── README.md                    # Project documentation
-```
+│   │   ├── user.js
+│   │   ├── post.js                      # Post schema ✨ NEW
+│   │   ├── commen & Setup
 
----
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account (or local MongoDB)
+- Git
 
-## 🚀 Installation
-
-### Step 1: Clone the Repository
-
+### Step 1: Clone Repository
 ```bash
 git clone <repository-url>
 cd newway
 ```
 
-### Step 2: Install Frontend Dependencies
-
+### Step 2: Backend Setup
 ```bash
-cd frontend
+cd server
 npm install
+cp .env.example .env
+# Edit .env with your MongoDB credentials and JWT secret
+npm run dev
+# Backend runs on http://localhost:4002
 ```
+
+### Step 3: Frontend Setup
+```bash
+cd ../frontend
+npm install
+echo "VITE_API_BASE_URL=http://localhost:4002" > .env.local
+npm run dev
+# Frontend runs on http://localhost:5173
+```
+
+### MongoDB Setup
+- **Local**: Install MongoDB and ensure service is running
+- **Atlas**: Create cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- Update MONGODB_URI in your backend .env file
 
 ### Step 3: Install Backend Dependencies
 
@@ -145,38 +180,21 @@ npm install
 - Get your connection string
 
 ---
-
-## 🏃 Running the Project
-
-### Option 1: Run Frontend and Backend Separately
-
-#### Terminal 1 - Start Backend Server
-
+Terminal 1: Start Backend
 ```bash
 cd server
 npm run dev
+# Runs on http://localhost:4002
 ```
 
-The backend server will start on `http://localhost:5000` (or port specified in your config)
-
-#### Terminal 2 - Start Frontend Development Server
-
+### Terminal 2: Start Frontend
 ```bash
 cd frontend
 npm run dev
+# Runs on http://localhost:5173
 ```
 
-The frontend will be available at `http://localhost:5173`
-
-### Option 2: Run Both Simultaneously (Using npm-run-all)
-
-1. Install npm-run-all globally:
-```bash
-npm install -g npm-run-all
-```
-
-2. From the root directory:
-```bash
+**Both servers must be running for full functionality!**bash
 npm install
 npm run dev
 ```
@@ -200,36 +218,19 @@ JWT_SECRET=your_jwt_secret_key_here
 
 # Port
 PORT=5000
-
-# CORS Origins
-FRONTEND_URL=http://localhost:5173
-```
-
-### Frontend (.env)
-
-Create a `.env` file in the `frontend` directory:
-
 ```env
-# API Base URL
-VITE_API_BASE_URL=http://localhost:5000/api
-
-# Google OAuth (if implementing OAuth)
-VITE_GOOGLE_CLIENT_ID=your_google_client_id_here
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/newways
+PORT=4002
+JWT_SECRET=your_secret_key_here
+TOKEN_EXPIRY=7d
 ```
 
----
-
-## 📡 API Endpoints
-
-### Authentication Endpoints
-
-#### Sign Up
+### Frontend (.env.local)
+```env
+VITE_API_BASE_URL=http://localhost:4002
 ```
-POST /api/auth/signup
-Content-Type: application/json
 
-{
-  "firstName": "John",
+See `.env.example` files for template configurations.firstName": "John",
   "lastName": "Doe",
   "email": "john@example.com",
   "password": "password123",
@@ -253,46 +254,36 @@ Content-Type: application/json
 {
   "token": "jwt_token_here",
   "user": {
-    "id": "user_id",
-    "email": "john@example.com",
-    "userType": "user"
-  }
-}
-```
+    "id": "user_id" Overview
 
----
+### Authentication (`/api/v1/auth`)
+- `POST /signup` - Register new user
+- `POST /login` - Login with email/password
+- `POST /logout` - Logout user
 
-## 💻 Usage
+### Posts (`/api/v1/posts`)
+- `POST /` - Create post
+- `GET /` - Get all posts (paginated)
+- `GET /:id` - Get post by ID
+- `PUT /:id` - Update post
+- `DELETE /:id` - Delete post
+- `POST /:id/like` - Like/Unlike post
 
-### 1. Access the Application
+### Comments (`/api/v1/comments`)
+- `POST /` - Create comment
+- `GET /post/:postId` - Get post comments
+- `PUT /:id` - Update comment
+- `DELETE /:id` - Delete comment
+- `POST /:id/like` - Like/Unlike comment
 
-Open your browser and navigate to:
-```
-http://localhost:5173
-```
+### Admin (`/api/v1/admin`)
+- `POST /reply` - Post official reply (admin only)
+- `GET /replies/:postId` - Get admin replies
+- `PUT /reply/:id` - Update reply (admin only)
+- `DELETE /reply/:id` - Delete reply (admin only)
+- `GET /moderation/posts` - Get posts for moderation (admin only)
 
-### 2. User Registration
-
-- Click on "Sign Up"
-- Fill in the registration form
-- Choose user type (User or Admin)
-- Submit to create account
-
-### 3. User Login
-
-- Click on "Login"
-- Enter email and password
-- Click "Sign In"
-- Get redirected to user dashboard
-
-### 4. Role-Based Access
-
-- **User**: Access user dashboard at `/user-dashboard`
-- **Admin**: Access admin dashboard at `/admin-dashboard`
-- Unauthorized users will see the unauthorized page
-
-### 5. Using the Application
-
+**📖 [Full API Documentation](./API_DOCUMENTATION.md)**
 - View profile information in the dashboard
 - Sessions are managed via JWT tokens stored in cookies
 - Tokens are automatically included in API requests
@@ -306,63 +297,86 @@ http://localhost:5173
 ```bash
 cd frontend
 npm run build
-```
+``` Guide
 
-This creates an optimized production build in the `dist` folder.
+### 1. User Registration
+- Navigate to `/signup`
+- Enter name, email, password
+- Submit to create account (default: User role)
 
-### Backend Deployment
+### 2. User Login
+- Navigate to `/login`
+- Enter email and password
+- Redirected to user dashboard
 
-1. Set production environment variables
-2. Use PM2 or similar process manager:
+### 3. Create & Manage Posts
+- From user dashboard, write post content
+- Click "Post" to publish
+- Posts appear in feed for all users
+- Edit or delete your own posts
 
+### 4. Comment & Engage
+- Click on a post to view details
+- Add comments as authenticated user
+- Like posts and comments
+- Edit/delete own comments
+
+### 5. Admin Features
+- Login with admin account
+- Access admin dashboard at `/admin/dashboard`
+- View all posts for moderation
+- Post official replies (marked as admin)
+- Delete any post/comment if needed
+
+### 6. Logout
+- Click logout button
+- Token cleared from storage
+- Redirected to home page
+
+---
+
+## 🔒 Security Features
+
+✅ JWT Authentication with expiry
+✅ Password hashing with bcryptjs
+✅ Role-based access control
+✅ Authorization middleware
+✅ Input validation on server
+✅ CORS protection
+✅ Protected routes
+✅ Ownership verification
+
+---
+
+## 📦 Production Deployment
+
+### Frontend (Vercel)
 ```bash
-npm install -g pm2
-pm2 start server/index.js --name "newway-backend"
+npm run build
+# Deploy dist/ folder to Vercel
 ```
 
----
-
-## 🐛 Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| **Connection refused (Backend)** | Ensure MongoDB is running and connection string is correct |
-| **CORS errors** | Check CORS configuration in `server/index.js` - add your frontend URL |
-| **Invalid token errors** | Clear browser cookies and login again |
-| **Port already in use** | Change the port in your config or kill the process using that port |
-
----
-
-## 📝 Available Scripts
-
-### Frontend
-
+### Backend (Heroku/Railway)
 ```bash
-npm run dev       # Start development server
-npm run build     # Build for production
-npm run preview   # Preview production build
-npm run lint      # Run ESLint
+# Set production environment variables
+# Deploy to Heroku or Railway
 ```
 
-### Backend
-
-```bash
-npm run dev       # Start server with nodemon
-npm start         # Start server normally
-```
+### Database
+- Use MongoDB Atlas for production
+- Set proper security rules and backups
+- Whitelist production IPs
 
 ---
 
-## 🤝 Contributing
+## 📊 Data Models
 
-Feel free to fork, create a feature branch, and submit a pull request.
+**User**: Contains profile and role information
+**Post**: Main content unit created by users
+**Comment**: User responses to posts
+**AdminReply**: Official moderated responses (admin only)
 
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
+All models include timestamps and proper relationships.
 ---
 
 ## ✋ Support

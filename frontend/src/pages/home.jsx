@@ -12,7 +12,7 @@ const HomePage = () => {
       <nav className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-blue-600">NewWay</h1>
+            <h1 className="text-2xl font-bold text-blue-600">DUCAT</h1>
             <div className="flex gap-4">
               {isAuthenticated ? (
                 <>
@@ -58,10 +58,10 @@ const HomePage = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6">
-            Welcome to NewWay
+            Welcome to DUCAT Interview project
           </h2>
           <p className="text-xl md:text-2xl text-slate-600 mb-8">
-            Your platform for learning and admin management
+            Your platform for admin and user post interview project
           </p>
           {!isAuthenticated && (
             <div className="flex gap-4 justify-center">
@@ -86,7 +86,7 @@ const HomePage = () => {
           <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition">
             <div className="text-4xl mb-4">👤</div>
             <h3 className="text-xl font-bold text-slate-900 mb-2">User Account</h3>
-            <p className="text-slate-600">Create your account and start learning with our comprehensive courses.</p>
+            <p className="text-slate-600">Create your account and start posting interview projects.</p>
           </div>
 
           <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition">
@@ -128,7 +128,7 @@ const HomePage = () => {
       {/* Footer */}
       <footer className="bg-slate-900 text-white mt-20 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>&copy; 2026 NewWay. All rights reserved.</p>
+          <p>&copy; 2026 DUCAT. All rights reserved.</p>
         </div>
       </footer>
     </div>

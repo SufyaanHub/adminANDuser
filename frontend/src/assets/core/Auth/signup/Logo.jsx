@@ -18,16 +18,16 @@ const Logo = ({ className = "" }) => {
         // Fallback when image fails to load
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500 text-slate-900 font-bold text-lg">
-            S
+            D
           </div>
           <span className="text-xl font-bold text-slate-100">
-            SkillHOUSE
+          DUCAT
           </span>
         </div>
       ) : (
         <img 
           src={logoImage} 
-          alt="SkillHOUSE Logo" 
+          alt="DUCAT Logo" 
           className="h-12 w-auto object-contain transition-transform hover:scale-105"
           onError={handleImageError}
           loading="eager"
