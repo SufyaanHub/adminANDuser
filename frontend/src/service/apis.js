@@ -1,23 +1,17 @@
-// Base URL for API requests - uses environment variable if available, otherwise localStorage for flexibility
+// Base URL for API requests - uses production URL or falls back to localhost for development
 const getBaseURL = () => {
-  // Production: use environment variable
+  // Check if running on production (Vercel)
+  if (window.location.hostname === 'adminuser-self.vercel.app') {
+    return 'https://adminanduser.onrender.com/api/v1';
+  }
+  
+  // Check environment variable
   if (import.meta.env.VITE_API_BASE_URL) {
     return import.meta.env.VITE_API_BASE_URL;
   }
   
   // Development: use localhost
-  if (import.meta.env.DEV) {
-    return "http://localhost:4002/api/v1";
-  }
-  
-  // Fallback: try to use sessionStorage (can be set dynamically)
-  const storedURL = sessionStorage.getItem('apiBaseURL');
-  if (storedURL) {
-    return storedURL;
-  }
-  
-  // Last resort defaults
-  return "http://localhost:4002/api/v1";
+  return 'http://localhost:4002/api/v1';
 };
 
 const BASE_URL = getBaseURL();
