@@ -2,19 +2,23 @@
 const getBaseURL = () => {
   // Check if running on production (Vercel)
   if (window.location.hostname === 'adminuser-self.vercel.app') {
+    console.log('✅ Production environment detected - Using Render backend');
     return 'https://adminanduser.onrender.com/api/v1';
   }
   
   // Check environment variable
   if (import.meta.env.VITE_API_BASE_URL) {
+    console.log('✅ Environment variable detected:', import.meta.env.VITE_API_BASE_URL);
     return import.meta.env.VITE_API_BASE_URL;
   }
   
   // Development: use localhost
+  console.log('🔧 Development environment - Using localhost backend');
   return 'http://localhost:4002/api/v1';
 };
 
 const BASE_URL = getBaseURL();
+console.log('🚀 API Base URL being used:', BASE_URL);
 
 // Auth Endpoints
 export const endpoints = {
