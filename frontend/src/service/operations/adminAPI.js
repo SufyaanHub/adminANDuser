@@ -1,8 +1,18 @@
 import { apiConnector } from "../apiconnector";
 import { toast } from "react-hot-toast";
+import { adminEndpoints } from "../apis";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4002";
-const ADMIN_API = `${BASE_URL}/api/v1/admin`;
+const getBaseURL = () => {
+  if (window.location.hostname === 'adminuser-self.vercel.app') {
+    return 'https://adminanduser.onrender.com';
+  }
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL.replace('/api/v1', '');
+  }
+  return 'http://localhost:4002';
+};
+
+const ADMIN_API = `${getBaseURL()}/api/v1/admin`;
 
 // Post admin reply
 export const postAdminReply = async (postId, content, token) => {
