@@ -14,7 +14,7 @@ const {
 export function signUp(name, email, password, confirmPassword, role, navigate) {
   return async (dispatch) => {
     dispatch(setLoading(true))
-    const toastId = toast.loading("Creating your account...")
+    const toastId = toast.loading("🔐 Creating your account...")
     
     try {
       console.log("API Call - Signup endpoint:", endpoints.SIGNUP_API)
@@ -26,6 +26,8 @@ export function signUp(name, email, password, confirmPassword, role, navigate) {
         confirmPassword: "****"
       });
       
+      const startTime = Date.now();
+      
       const response = await apiConnector("POST", endpoints.SIGNUP_API, {
         name,
         email,
@@ -33,6 +35,10 @@ export function signUp(name, email, password, confirmPassword, role, navigate) {
         confirmPassword,
         role,
       })
+      
+      const duration = Date.now() - startTime;
+      console.log(`✅ Signup API call completed in ${duration}ms`);
+      toast.loading(`💾 Setting up your profile...`, { id: toastId });
 
       console.log("Full Response:", response)
       console.log("Response Status:", response.status)

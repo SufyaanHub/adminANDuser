@@ -6,6 +6,7 @@ const TOKEN_EXPIRY = process.env.TOKEN_EXPIRY || "7d";
 
 exports.signup = async (req, res) => {
   try {
+    const startTime = Date.now();
     const { name, email, password, confirmPassword, role } = req.body;
 
     // Validation
@@ -24,8 +25,8 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Hash password with 8 rounds (faster than 10, still secure)
+    const hashedPassword = await bcrypt.hash(password, 8);
 
     // Create user with role validation
     const userRole = role && ["user", "admin"].includes(role) ? role : "user";
@@ -42,6 +43,9 @@ exports.signup = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: TOKEN_EXPIRY }
     );
+
+    const duration = Date.now() - startTime;
+    console.log(`✅ Signup completed in ${duration}ms`);
 
     res.status(201).json({
       message: "User registered successfully",
